@@ -127,7 +127,6 @@ select:focus::placeholder {
   opacity: 0.7;
 }
 
-
 .button-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -165,6 +164,22 @@ button.operator-btn:hover {
   padding: 12px;
   border-radius: 12px;
   box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px rgba(255, 255, 255, 0.1);
+}
+
+.history-container {
+  margin-top: 20px;
+}
+
+button.clear-history-btn {
+  background-color: #dc3545;
+  color: white;
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+button.clear-history-btn:hover {
+  background-color: #c82333;
 }
 
 .checkbox-group {
