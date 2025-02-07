@@ -40,7 +40,7 @@ function BasicCalculator() {
   };
 
   return (
-    <div className="calculator-container">
+    <div className="calculator">
       <h3>Basic Calculator</h3>
       <input type="text" value={result} readOnly />
 
