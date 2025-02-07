@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 function BasicCalculator() {
   const [result, setResult] = useState("");
+  const [history, setHistory] = useState([]);
 
   useEffect(() => {
     const handleKeyPress = (event) => {
@@ -28,8 +29,9 @@ function BasicCalculator() {
 
   const calculateResult = () => {
     try {
-      const sanitizedInput = result.replace(/\b0+(?=\d)/g, "");
-      setResult(eval(sanitizedInput).toString());
+      const evaluatedResult = eval(result).toString();
+      setResult(evaluatedResult);
+      setHistory([...history, `${result} = ${evaluatedResult}`]);
     } catch {
       setResult("Error");
     }
@@ -39,6 +41,10 @@ function BasicCalculator() {
     setResult("");
   };
 
+  const clearHistory = () => {
+    setHistory([]);
+  };
+
   return (
     <div className="calculator">
       <h3>Basic Calculator</h3>
@@ -46,26 +52,32 @@ function BasicCalculator() {
 
       <div className="button-grid">
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((num) => (
-          <button key={num} className="number-btn" onClick={() => handleClick(num.toString())}>
+          <button key={num} onClick={() => handleClick(num.toString())}>
             {num}
           </button>
         ))}
 
         {["+", "-", "*", "/"].map((operator) => (
-          <button key={operator} className="operator-btn" onClick={() => handleClick(operator)}>
+          <button key={operator} onClick={() => handleClick(operator)}>
             {operator}
           </button>
         ))}
 
-        <button className="operator-btn" onClick={calculateResult}>
-          =
-        </button>
-        <button className="operator-btn" onClick={clearResult}>
-          C
-        </button>
+        <button onClick={calculateResult}>=</button>
+        <button onClick={clearResult}>C</button>
       </div>
 
-      <div className="result">{result ? `Result: ${result}` : ""}</div>
+      <div>
+        <h4>History</h4>
+        <ul>
+          {history.map((entry, index) => (
+            <li key={index} onClick={() => setResult(entry.split(" = ")[0])}>
+              {entry}
+            </li>
+          ))}
+        </ul>
+        {history.length > 0 && <button onClick={clearHistory}>Clear History</button>}
+      </div>
     </div>
   );
 }
