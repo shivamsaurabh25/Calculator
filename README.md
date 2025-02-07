@@ -54,4 +54,4 @@ This project is licensed under the MIT License.
 - External APIs for providing real-time exchange rates.
 
 ## Screenshots
-- ![UI Sample](https://iili.io/2QnHFwu.md.png)
+- ![UI Sample](https://iili.io/2DGNcb9.md.png")
