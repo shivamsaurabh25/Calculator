@@ -36,9 +36,9 @@ function ScientificCalculator() {
 
   const calculateResult = () => {
     try {
-      const evaluatedResult = eval(result).toString();
-      setResult(evaluatedResult);
-      setHistory([...history, `${result} = ${evaluatedResult}`]);
+      const sanitizedInput = result.replace(/\b0+(?=\d)/g, "");
+      setResult(eval(sanitizedInput).toString());
+      setHistory([...history, `${result} = ${sanitizedInput}`]);
     } catch {
       setResult("Error");
     }
