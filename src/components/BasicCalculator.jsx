@@ -9,7 +9,7 @@ function BasicCalculator() {
 
       if (!isNaN(key)) {
         setResult((prev) => prev + key);
-      } else if (["+","-","*","/"].includes(key)) {
+      } else if (["+", "-", "*", "/"].includes(key)) {
         setResult((prev) => prev + key);
       } else if (key === "Enter") {
         calculateResult();
@@ -28,7 +28,8 @@ function BasicCalculator() {
 
   const calculateResult = () => {
     try {
-      setResult(eval(result).toString());
+      const sanitizedInput = result.replace(/\b0+(?=\d)/g, "");
+      setResult(eval(sanitizedInput).toString());
     } catch {
       setResult("Error");
     }
