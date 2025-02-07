@@ -2,6 +2,14 @@ import React, { useState, useEffect } from "react";
 
 function ScientificCalculator() {
   const [result, setResult] = useState("");
+  const [history, setHistory] = useState(() => {
+    const savedHistory = localStorage.getItem("scientificCalcHistory");
+    return savedHistory ? JSON.parse(savedHistory) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("scientificCalcHistory", JSON.stringify(history));
+  }, [history]);
 
   useEffect(() => {
     const handleKeyPress = (event) => {
@@ -9,7 +17,7 @@ function ScientificCalculator() {
 
       if (!isNaN(key)) {
         setResult((prev) => prev + key);
-      } else if (["+","-","*","/","^","(",")"].includes(key)) {
+      } else if (["+", "-", "*", "/", "^", "(", ")"].includes(key)) {
         setResult((prev) => prev + key);
       } else if (key === "Enter") {
         calculateResult();
@@ -28,7 +36,9 @@ function ScientificCalculator() {
 
   const calculateResult = () => {
     try {
-      setResult(eval(result).toString());
+      const evaluatedResult = eval(result).toString();
+      setResult(evaluatedResult);
+      setHistory([...history, `${result} = ${evaluatedResult}`]);
     } catch {
       setResult("Error");
     }
@@ -38,28 +48,35 @@ function ScientificCalculator() {
     setResult("");
   };
 
+  const clearHistory = () => {
+    setHistory([]);
+  };
+
   const handleScientificOperation = (operation) => {
     try {
       const value = eval(result);
+      let operationResult = "";
       switch (operation) {
         case "sin":
-          setResult(Math.sin(value).toFixed(5).toString());
+          operationResult = Math.sin(value).toFixed(5).toString();
           break;
         case "cos":
-          setResult(Math.cos(value).toFixed(5).toString());
+          operationResult = Math.cos(value).toFixed(5).toString();
           break;
         case "tan":
-          setResult(Math.tan(value).toFixed(5).toString());
+          operationResult = Math.tan(value).toFixed(5).toString();
           break;
         case "log":
-          setResult(Math.log(value).toFixed(5).toString());
+          operationResult = Math.log(value).toFixed(5).toString();
           break;
         case "sqrt":
-          setResult(Math.sqrt(value).toFixed(5).toString());
+          operationResult = Math.sqrt(value).toFixed(5).toString();
           break;
         default:
           break;
       }
+      setResult(operationResult);
+      setHistory([...history, `${operation}(${value}) = ${operationResult}`]);
     } catch {
       setResult("Error");
     }
@@ -72,32 +89,38 @@ function ScientificCalculator() {
 
       <div className="button-grid">
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((num) => (
-          <button key={num} className="number-btn" onClick={() => handleClick(num.toString())}>
+          <button key={num} onClick={() => handleClick(num.toString())}>
             {num}
           </button>
         ))}
 
         {["+", "-", "*", "/", "^", "(", ")"].map((operator) => (
-          <button key={operator} className="operator-btn" onClick={() => handleClick(operator)}>
+          <button key={operator} onClick={() => handleClick(operator)}>
             {operator}
           </button>
         ))}
 
         {["sin", "cos", "tan", "log", "sqrt"].map((func) => (
-          <button key={func} className="operator-btn" onClick={() => handleScientificOperation(func)}>
+          <button key={func} onClick={() => handleScientificOperation(func)}>
             {func}
           </button>
         ))}
 
-        <button className="operator-btn" onClick={calculateResult}>
-          =
-        </button>
-        <button className="operator-btn" onClick={clearResult}>
-          C
-        </button>
+        <button onClick={calculateResult}>=</button>
+        <button onClick={clearResult}>C</button>
       </div>
 
-      <div className="result">{result ? `Result: ${result}` : ""}</div>
+      <div>
+        <h4>History</h4>
+        <ul>
+          {history.map((entry, index) => (
+            <li key={index} onClick={() => setResult(entry.split(" = ")[0])}>
+              {entry}
+            </li>
+          ))}
+        </ul>
+        {history.length > 0 && <button onClick={clearHistory}>Clear History</button>}
+      </div>
     </div>
   );
 }
