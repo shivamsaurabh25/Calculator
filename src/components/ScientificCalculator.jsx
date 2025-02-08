@@ -37,10 +37,12 @@ function ScientificCalculator() {
   const calculateResult = () => {
     try {
       const sanitizedInput = result.replace(/\b0+(?=\d)/g, "");
-      setResult(eval(sanitizedInput).toString());
-      setHistory([...history, `${result} = ${sanitizedInput}`]);
+      const calculation = eval(sanitizedInput).toString();
+      setResult(calculation);
+      setHistory([...history, `${result} = ${calculation}`]);
     } catch {
       setResult("Error");
+      setTimeout(() => setResult(""), 1500);
     }
   };
 
@@ -56,7 +58,7 @@ function ScientificCalculator() {
     try {
       const value = eval(result);
       let operationResult = "";
-      switch (operation) {
+      switch (operation) {  
         case "sin":
           operationResult = Math.sin(value).toFixed(5).toString();
           break;
