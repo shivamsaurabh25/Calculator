@@ -30,10 +30,12 @@ function BasicCalculator() {
   const calculateResult = () => {
     try {
       const sanitizedInput = result.replace(/\b0+(?=\d)/g, "");
-      setResult(eval(sanitizedInput).toString());
-      setHistory([...history, `${result} = ${sanitizedInput}`]);
+      const calculation = eval(sanitizedInput).toString();
+      setResult(calculation);
+      setHistory([...history, `${result} = ${calculation}`]);
     } catch {
       setResult("Error");
+      setTimeout(() => setResult(""), 1500);
     }
   };
 
