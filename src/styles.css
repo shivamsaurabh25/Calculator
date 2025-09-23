@@ -1,4 +1,4 @@
-body {
+body { 
   font-family: 'Poppins', Arial, sans-serif;
   margin: 0;
   padding: 0;
@@ -106,6 +106,20 @@ select {
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
   box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.1), inset -3px -3px 6px rgba(255, 255, 255, 0.1);
+  appearance: none;
+}
+
+/* Fix for dropdown options */
+select option {
+  background: #1e1e1e;  /* Dark background */
+  color: #ffffff;       /* White text */
+}
+
+select option:hover,
+select option:focus,
+select option:checked {
+  background: #ff69b4;
+  color: #ffffff;
 }
 
 input:focus,
